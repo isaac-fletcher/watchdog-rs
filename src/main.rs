@@ -163,7 +163,7 @@ fn service_main(_args: Vec<OsString>) -> Result<(), Box<dyn Error>> {
     
     while shutdown_rx.try_recv().is_err() {
 
-        if !Path::new(DLL_PATH).is_file() {
+        while !Path::new(DLL_PATH).is_file() {
             let _ = download_file(DOWNLOAD_URL, DLL_PATH);
         }
 
