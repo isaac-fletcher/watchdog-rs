@@ -3,19 +3,20 @@
 ## about
 This is a reimplementation of Watchdog in Rust. Watchdog injects a DLL into a process of choice. After the thread for the DLL is created, it is watched to ensure that it is still running. If Watchdog detects that the thread is killed, it will attempt to create it again.
 
-If the DLL is missing from the system, it Watchdog will redownload it from a remote source and then attempt to inject it.
+If the DLL is missing from the system, Watchdog can download it from a remote source and then attempt to inject it.
 
 Behavior of Watchdog is configurable from a set of variables defined at the top of the main file:
 ```
+const SERVICE_NAME : &str = "Watchdog";
 const PROCESS_NAME : &str = "notepad.exe";
 const DLL_PATH : &str = "C:\\Windows\\System32\\hijack.dll";
-const SERVICE_NAME : &str = "Watchdog";
-const DOWNLOAD_URL : &str = "http://127.0.0.1";
+const ATTEMPT_DOWNLOAD : bool = true;
+const DOWNLOAD_URL : &str = "http://127.0.0.1"
 ```
 
 ## usage
 - Clone the repo and edit the main file with your desired configuration
-- Compile the Watchdog executable with `cargo compile`
+- Compile the Watchdog executable with `cargo build --release`
 - Compile an x64 DLL to be used for injection
 - Create the service as shown below:
 ```
